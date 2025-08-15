@@ -6,4 +6,4 @@ app.title = "Sintiendo"
 
 @app.get("/", tags = "Home")
 def home():
-    return "EmoKids"
+    return "Sintiendo"
