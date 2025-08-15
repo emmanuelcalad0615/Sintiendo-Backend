@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
-app.title = "Emokids"
+app.title = "Sintiendo"
 
 @app.get("/", tags = "Home")
 def home():
