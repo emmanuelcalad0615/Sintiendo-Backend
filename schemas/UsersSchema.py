@@ -13,3 +13,12 @@ class UserResponse(BaseModel):
 
     class Config:
         orm_mode = True  # Esto permite devolver objetos SQLAlchemy directamente
+
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str
+
