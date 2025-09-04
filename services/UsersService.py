@@ -11,15 +11,12 @@ def create_user(db: Session, username: str, email: str, password: str):
     return new_user
 
 def login_user(db: Session, email: str, password: str):
-    # Buscar usuario por email
     user = db.query(User).filter(User.email == email).first()
     if not user:
         return None, "Usuario no encontrado"
     
-    # Verificar contraseña
     if not verify_password(password, user.hashed_password):
         return None, "Contraseña incorrecta"
     
-    # Crear token
     token = create_access_token({"sub": user.email})
     return token, None

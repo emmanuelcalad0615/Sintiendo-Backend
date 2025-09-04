@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Sequence
 from database import Base
-id_seq = Sequence('user_id_seq', schema='ECCGOAT')
+id_seq = Sequence('user_id_seq', schema='ECCGOAT', start = 1, increment = 1)
 
 class User(Base):
     __tablename__ = "users"

@@ -5,14 +5,13 @@ class UserCreate(BaseModel):
     email: EmailStr  
     password: str
 
-# Para devolver datos al cliente (sin contraseña)
 class UserResponse(BaseModel):
     id: int
     username: str
     email: str
 
     class Config:
-        orm_mode = True  # Esto permite devolver objetos SQLAlchemy directamente
+        orm_mode = True  
 
 class LoginRequest(BaseModel):
     email: EmailStr
