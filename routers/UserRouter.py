@@ -15,9 +15,9 @@ def signup(user: UserCreate, db: Session = Depends(get_db)):
 
 @router.post("/login", response_model=TokenResponse)
 def login(user_data: LoginRequest, db: Session = Depends(get_db)):
-    token, error = login_user(db, user_data.email, user_data.password)
+    data_response, error = login_user(db, user_data.email, user_data.password)
     
     if error:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=error)
     
-    return {"access_token": token, "token_type": "bearer"}
+    return {"access_token": data_response.access_token, "token_type": data_response.token_type, "username": data_response.username, "email": data_response.email}

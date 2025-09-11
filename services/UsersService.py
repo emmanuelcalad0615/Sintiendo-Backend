@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from models.user import User
 from services.utils import hash_password, verify_password, create_access_token
+from schemas.UsersSchema import TokenResponse
 
 def create_user(db: Session, username: str, email: str, password: str):
     existing_user = db.query(User).filter(User.username == username).first()
@@ -20,6 +21,8 @@ def login_user(db: Session, email: str, password: str):
     
     if not verify_password(password, user.hashed_password):
         return None, "Contraseña incorrecta"
-    
+
     token = create_access_token({"sub": user.email})
-    return token, None
+    data_response = TokenResponse(access_token=token, token_type="bearer", username=user.username, email=user.email)
+    
+    return data_response, None
