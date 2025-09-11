@@ -1,10 +1,10 @@
 from sqlalchemy import Column, Integer, String, Sequence
 from database import Base
-id_seq = Sequence('user_id_seq', schema='ECCGOAT', start = 1, increment = 1)
+id_seq = Sequence('user_id_seq', schema='SINTIENDO', start = 1, increment = 1)
 
 class User(Base):
     __tablename__ = "users"
-    __table_args__ = {"schema": "ECCGOAT"}
+    __table_args__ = {"schema": "SINTIENDO"}
 
     id = Column(Integer, id_seq,primary_key=True, index=True)
     username = Column(String(50), unique=True, nullable=False, index=True)

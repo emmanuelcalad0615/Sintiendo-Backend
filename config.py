@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     database_url: str
     secret_key: str
-    frontend_url: str
+    frontend_url: list[str]
 
 
     class Config:
