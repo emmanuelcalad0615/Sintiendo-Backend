@@ -6,18 +6,48 @@ from services.UsersService import create_user, login_user
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
-@router.post("/singup", response_model=UserResponse)
+
+def http_error(code:int, message:str, detail:str=None):
+    """
+    Helper para enviar errores con un formato consistente
+    """
+    raise HTTPException(
+        status_code=code,
+        detail={
+            "status": code,
+            "message": message,
+            "detail": detail or message
+        }
+    )
+
+
+@router.post("/signup", response_model=UserResponse)
 def signup(user: UserCreate, db: Session = Depends(get_db)):
     try:
-        return create_user(db, user.username, user.email, user.password)
+        return create_user(
+            db=db,
+            username=user.username,
+            email=user.email,
+            password=user.password,
+            role=user.role
+        )
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        http_error(400, "Error de validación", str(e))
+    except Exception as e:
+        http_error(500, "Error interno del servidor", str(e))
+
 
 @router.post("/login", response_model=TokenResponse)
 def login(user_data: LoginRequest, db: Session = Depends(get_db)):
-    data_response, error = login_user(db, user_data.email, user_data.password)
-    
-    if error:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=error)
-    
-    return {"access_token": data_response.access_token, "token_type": data_response.token_type, "username": data_response.username, "email": data_response.email}
+    try:
+        data_response, error = login_user(db, user_data.email, user_data.password)
+        
+        if error:
+            http_error(status.HTTP_401_UNAUTHORIZED, "Credenciales inválidas", error)
+
+        return data_response
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        http_error(500, "Error interno del servidor", str(e))

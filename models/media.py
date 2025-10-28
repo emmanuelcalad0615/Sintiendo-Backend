@@ -43,5 +43,5 @@ class MediaFile(Base):
             "file_size": self.file_size,
             "description": self.description,
             "created_at": self.created_at,
-            "download_url": self.get_download_url()
-        }
+            "download_url": self.download_url
+            }

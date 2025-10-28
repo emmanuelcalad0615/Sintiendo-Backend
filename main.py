@@ -12,7 +12,7 @@ from config import settings
 import os
 
 
-Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine, checkfirst=True)
 
 app = FastAPI()
 
